@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <!-- 登录 注册 购物车... -->
 <div class="container-fluid">
@@ -35,11 +36,12 @@
 			</div>
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav">
-					<li class="active"><a href="product_list.htm">手机数码<span class="sr-only">(current)</span></a></li>
-					<li><a href="#">电脑办公</a></li>
-					<li><a href="#">电脑办公</a></li>
-					<li><a href="#">电脑办公</a></li>
+				<ul class="nav navbar-nav" id="categoryUl">
+				
+					<%-- <c:forEach items="${categoryList }" var="category">
+						<li><a href="#">${category.cname }</a></li>
+					</c:forEach> --%>
+					
 				</ul>
 				<form class="navbar-form navbar-right" role="search">
 					<div class="form-group">
@@ -49,5 +51,27 @@
 				</form>
 			</div>
 		</div>
+		
+		<script type="text/javascript">
+			//header.jsp加载完毕后 去服务器端获得所有的category数据
+			$(function(){
+				var content = "";
+				$.post(
+					"${pageContext.request.contextPath}/categoryList",
+					function(data){
+						//[{"cid":"xxx","cname":"xxxx"},{},{}]
+						//动态创建<li><a href="#">${category.cname }</a></li>
+						for(var i=0;i<data.length;i++){
+							content+="<li><a href='${pageContext.request.contextPath}/productListByCid?cid="+data[i].cid+"'>"+data[i].cname+"</a></li>";
+						}
+						
+						//将拼接好的li放置到ul中
+						$("#categoryUl").html(content);
+					},
+					"json"
+				);
+			});
+		</script>
+		
 	</nav>
 </div>
