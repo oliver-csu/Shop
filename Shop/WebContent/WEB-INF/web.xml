@@ -35,6 +35,7 @@
 		<servlet-name>CheckUsernameServlet</servlet-name>
 		<url-pattern>/checkUsername</url-pattern>
 	</servlet-mapping>
+	<!-- 
 	<servlet>
 		<description></description>
 		<display-name>IndexServlet</display-name>
@@ -74,5 +75,26 @@
 	<servlet-mapping>
 		<servlet-name>ProductInfoServlet</servlet-name>
 		<url-pattern>/productInfo</url-pattern>
+	</servlet-mapping> 
+	-->
+	<servlet>
+		<description></description>
+		<display-name>PrdocutServlet</display-name>
+		<servlet-name>PrdocutServlet</servlet-name>
+		<servlet-class>ren.oliver.shop.web.servlet.PrdocutServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PrdocutServlet</servlet-name>
+		<url-pattern>/product</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description></description>
+		<display-name>BaseServlet</display-name>
+		<servlet-name>BaseServlet</servlet-name>
+		<servlet-class>ren.oliver.shops.web.servlet.BaseServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>BaseServlet</servlet-name>
+		<url-pattern>/BaseServlet</url-pattern>
 	</servlet-mapping>
 </web-app>
