@@ -5,16 +5,34 @@ import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import ren.oliver.shop.domain.User;
 import ren.oliver.shop.service.UserService;
-import ren.oliver.shop.utils.MD5Utils;
 
 public class UserServlet extends BaseServlet {
+
+	// 用户注销
+	public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		HttpSession session = request.getSession();
+		// 从session中将user删除
+		session.removeAttribute("user");
+
+		// 将存储在客户端的cookie删除掉
+		Cookie cookie_username = new Cookie("cookie_username", "");
+		cookie_username.setMaxAge(0);
+		// 创建存储密码的cookie
+		Cookie cookie_password = new Cookie("cookie_password", "");
+		cookie_password.setMaxAge(0);
+
+		response.addCookie(cookie_username);
+		response.addCookie(cookie_password);
+
+		response.sendRedirect(request.getContextPath() + "/login.jsp");
+
+	}
 
 	// 用户登录
 	public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -23,9 +41,6 @@ public class UserServlet extends BaseServlet {
 		// 获得输入的用户名和密码
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-
-		// 对密码进行加密
-		// password = MD5Utils.md5(password);
 
 		// 将用户名和密码传递给service层
 		UserService service = new UserService();
@@ -41,7 +56,7 @@ public class UserServlet extends BaseServlet {
 			// 登录成功
 			// ***************判断用户是否勾选了自动登录*****************
 			String autoLogin = request.getParameter("autoLogin");
-			if ("true".equals(autoLogin)) {
+			if ("autoLogin".equals(autoLogin)) {
 				// 要自动登录
 				// 创建存储用户名的cookie
 				Cookie cookie_username = new Cookie("cookie_username", user.getUsername());
